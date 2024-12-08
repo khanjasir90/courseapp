@@ -549,6 +549,13 @@ Widget build(BuildContext context) {
 - **Riverpod** is the most flexible and powerful option, offering a great balance of performance and usability for larger and more complex apps.
 
 
+## Video Demonstration
+
+You can watch the video demonstration of the app here:
+
+[Click Here to See the Demonstration Video of Course App](https://drive.google.com/file/d/1LPnqV1YKutZ2CdFeOHMYkWNJBCxJFVgF/view?usp=sharing)
+
+
 
 
 
