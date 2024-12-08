@@ -22,6 +22,8 @@ class CourseSubmitView extends StatelessWidget {
     r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
   );
 
+  final _nameRegExp = RegExp(r'^[A-Za-z]+(?: [A-Za-z]+)*$');
+
   void _navigaToCoursePage(BuildContext context) {
     Navigator.pushReplacement(
       context,
@@ -60,6 +62,9 @@ class CourseSubmitView extends StatelessWidget {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your name';
+                      }
+                      if(!_nameRegExp.hasMatch(value)) {
+                        return 'Enter a valid name';
                       }
                       return null;
                     },
