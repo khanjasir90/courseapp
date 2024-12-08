@@ -153,6 +153,64 @@ class PageRouteUtil {
     ``` bash
     flutter test test/search_impl_test.dart
     ```
+2. Examples of Test Written for Search Feature.
+    ```bash
+     test('Empty search query returns empty result', () {
+      // Arrange
+      const query = '';
+      final courses = CourseResponse(courses: [
+        Course(id: 1, name: 'Flutter Basics', duration: '4 weeks'),
+        Course(id: 2, name: 'BlockChain', duration: '6 weeks'),
+      ], total: 2);
+
+      // Act
+      final result = searchImpl.searchCourses(courses, query);
+
+      // Assert
+      expect(result.courses, isEmpty);
+      expect(result.total, 0);
+    });
+
+    test('Performance with large number of courses', () {
+      // Arrange
+      const query = '2';
+      final courses = CourseResponse(courses: List.generate(1000, (index) => Course(
+          id: index,
+          name: 'Course $index',
+          duration: 'Duration $index',
+      )), total: 1000);
+
+      // Act
+      final result = searchImpl.searchCourses(courses, query);
+
+      // Assert
+      expect(result.courses, isNotEmpty);
+      expect(result.total, isNonZero);
+    });
+
+      test('Search query with non-alphabetic characters', () {
+      // Arrange
+      const query = 'AI 2021';
+      final courses = CourseResponse(courses: [
+        Course(id: 1, name: 'AI 2021', duration: '4 weeks'),
+        Course(id: 2, name: 'AI 2020', duration: '6 weeks'),
+      ], total: 2);
+
+      // Act
+      final result = searchImpl.searchCourses(courses, query);
+
+      // Assert
+      expect(result.courses.length, 1);
+      expect(result.courses[0].name, 'AI 2021');
+      expect(result.total, 1);
+    });
+    ```
+## Full Test File
+
+To see the full test file, you can view it here:
+
+[search_impl_test.dart](test/search_impl_test.dart)
+
 
 ## Documentation
 
