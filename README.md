@@ -23,6 +23,64 @@ This is a Flutter app that showcases:
 - Unit testing for search functionality.
 - Edge case handling for API timeouts and empty data.
 
+
+## Using Abstraction for Scalable and Maintainable Search Functionality
+
+In this implementation, we have used **abstraction** and followed **best practices** to ensure that the code remains **scalable** and **maintainable**, especially when adding new search functionality in the future.
+
+### 1. **Abstraction with an Abstract Class**
+The `Search` class is an abstract class that defines the contract for the search functionality. This provides the flexibility to introduce new search strategies (e.g., fuzzy search, Elasticsearch) in the future by simply extending this abstract class.
+
+### 2. **Decoupling Search Logic from UI**
+By abstracting the search logic into the `SearchImpl` class, we keep the UI code (e.g., `CourseSearchView`) independent of the underlying search implementation. This allows us to change the search logic without modifying the UI.
+
+### 3. **Ease of Extension**
+Adding new search types is easy. You can create new classes that extend the `Search` class and implement the `searchCourses` method, following the same contract. This design follows the **Open/Closed Principle**, allowing for extension without modification.
+
+### 4. **Polymorphism**
+The `SearchImpl` class overrides the `searchCourses` method, allowing polymorphism. This means we can swap out search algorithms easily while keeping the interface consistent.
+
+### 5. **Maintainability & Testability**
+By separating the search logic into an abstract class, the code is easier to maintain and test. New search strategies can be added without affecting existing code, and the code is easily testable with mocks or stubs.
+
+### Conclusion
+This abstraction ensures that the code remains **flexible**, **scalable**, and **easy to maintain** in the future, especially when adding new search features or changing the underlying search implementation.
+
+Implementation
+
+```bash
+
+import '../data/model/course_model.dart';
+
+abstract class Search {
+
+  CourseResponse searchCourses(CourseResponse courses, String query);
+}
+
+class SearchImpl extends Search {
+
+  @override
+  CourseResponse searchCourses(CourseResponse courses, String query) {
+    final List<Course> searchResults = [];
+
+    query = query.trim();
+
+    if(query.isEmpty) {
+      return CourseResponse(courses: [], total: 0);
+    }
+
+    for(final course in courses.courses) {
+      if(course.name.toLowerCase().contains(query.toLowerCase())) {
+        searchResults.add(course);
+      }
+    }
+
+    return CourseResponse(courses: searchResults, total: searchResults.length);
+  }
+}
+
+```
+
 ## Features
 - Functional and visually appealing UI.
 - Lazy-loaded data for seamless performance.
